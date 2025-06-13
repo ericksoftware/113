@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Issues List{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1>Issues</h1>
+    <a href="{% url 'issues:issue_create' %}" class="btn btn-primary mb-3">Create New Issue</a>
+    <a href="{% url 'issues:board' %}" class="btn btn-secondary mb-3">View Board</a>
+    
+    <div class="list-group">
+        {% for issue in issues %}
+        <a href="{% url 'issues:issue_detail' issue.pk %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ issue.title }}</h5>
+                <small class="text-muted">{{ issue.status }}</small>
+            </div>
+            <p class="mb-1">{{ issue.summary }}</p>
+            <small>Assigned to: {{ issue.assignee|default:"Unassigned" }}</small>
+        </a>
+        {% empty %}
+        <div class="alert alert-info">No issues found.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

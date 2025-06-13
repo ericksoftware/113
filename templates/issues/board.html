@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Board View{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1>Board View</h1>
+    
+    <div class="mb-3">
+        <form method="get" class="form-inline">
+            <select name="team" class="form-select me-2">
+                <option value="">All Teams</option>
+                {% for team in teams %}
+                <option value="{{ team.name }}" {% if request.GET.team == team.name|stringformat:"s" %}selected{% endif %}>
+                    {{ team.name }}
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3>To Do</h3>
+                </div>
+                <div class="card-body">
+                    {% for issue in todo_issues %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ issue.title }}</h5>
+                            <p class="card-text">{{ issue.summary }}</p>
+                            <small>Team: {{ issue.assigned_team|default:"Unassigned" }}</small>
+                            <a href="{% url 'issues:issue_detail' issue.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No issues in this column</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h3>In Progress</h3>
+                </div>
+                <div class="card-body">
+                    {% for issue in in_progress_issues %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ issue.title }}</h5>
+                            <p class="card-text">{{ issue.summary }}</p>
+                            <small>Team: {{ issue.assigned_team|default:"Unassigned" }}</small>
+                            <a href="{% url 'issues:issue_detail' issue.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No issues in this column</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3>Done</h3>
+                </div>
+                <div class="card-body">
+                    {% for issue in done_issues %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ issue.title }}</h5>
+                            <p class="card-text">{{ issue.summary }}</p>
+                            <small>Team: {{ issue.assigned_team|default:"Unassigned" }}</small>
+                            <a href="{% url 'issues:issue_detail' issue.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No issues in this column</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

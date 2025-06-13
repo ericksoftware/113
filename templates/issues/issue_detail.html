@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ issue.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>{{ issue.title }}</h2>
+                <span class="badge bg-{% if issue.status.name == 'Done' %}success{% elif issue.status.name == 'In Progress' %}warning{% else %}primary{% endif %}">
+                    {{ issue.status }}
+                </span>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Summary</h5>
+            <p class="card-text">{{ issue.summary }}</p>
+            
+            <h5 class="card-title mt-4">Description</h5>
+            <p class="card-text">{{ issue.description }}</p>
+            
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h5>Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Reporter:</strong> {{ issue.reporter.get_full_name|default:issue.reporter.username }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Assignee:</strong> {{ issue.assignee.get_full_name|default:issue.assignee.username|default:"Unassigned" }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Team:</strong> {{ issue.assigned_team.name|default:"Unassigned" }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Created:</strong> {{ issue.created_on|date:"M d, Y H:i" }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <a href="{% url 'issues:issue_update' issue.pk %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'issues:issue_delete' issue.pk %}" class="btn btn-danger">Delete</a>
+                <a href="{% url 'issues:issue_list' %}" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
