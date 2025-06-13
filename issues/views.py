@@ -30,7 +30,7 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
 class IssueDeleteView(LoginRequiredMixin, DeleteView):
     model = Issue
     template_name = 'issues/issue_confirm_delete.html'
-    success_url = reverse_lazy('issue_list')
+    success_url = reverse_lazy('issues:issue_list')
 
     from django.db.models import Q
 
